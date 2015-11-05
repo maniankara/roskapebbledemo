@@ -7,11 +7,17 @@
 var UI = require('ui');
 var Vector2 = require('vector2');
 
+//Pebble.addEventListener('appmessage',
+//  function(e) {
+//    console.log('Received message: ' + JSON.stringify(e.payload));
+//  }
+//);
+
 var main = new UI.Card({
-  title: 'Pebble.js',
+  title: 'RoskaProject',
   icon: 'images/menu_icon.png',
-  subtitle: 'Hello World!',
-  body: 'Press any button.'
+  subtitle: 'Clearing trashes',
+  body: 'Press down button.'
 });
 
 Pebble.addEventListener('ready', function(e) {
@@ -64,9 +70,23 @@ main.on('click', 'select', function(e) {
 });
 
 main.on('click', 'down', function(e) {
+  var transactionId = Pebble.sendAppMessage( 
+    { '0': 42, '1': 'String value' },
+    function(e) {
+      console.log('Successfully delivered message with transactionId=' +
+        e.data.transactionId);
+    },
+    function(e) {
+      console.log('Unable to deliver message with transactionId=' +
+        e.data.transactionId +
+        ' Error is: ' + e.error.message);
+    }
+  );
+    
+  
   var card = new UI.Card();
-  card.title('A Card');
-  card.subtitle('Is a Window');
-  card.body('The simplest window type in Pebble.js.');
+  card.title('Confirmation!');
+  card.subtitle('Trash plotted');
+  card.body('Press back button to resume');
   card.show();
 });
